@@ -1,430 +1,455 @@
 <!DOCTYPE html>
 <html lang="az">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flame Group | Kodlaşdırma</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
-            color: #fff;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-        
-        .fire-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(255, 80, 0, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 80% 20%, rgba(255, 40, 0, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 40% 40%, rgba(255, 120, 0, 0.1) 0%, transparent 40%);
-            z-index: -1;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            border-bottom: 2px solid rgba(255, 100, 0, 0.5);
-            margin-bottom: 40px;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .logo-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(45deg, #ff4500, #ff8c00);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: white;
-            box-shadow: 0 0 15px rgba(255, 69, 0, 0.7);
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 15px rgba(255, 69, 0, 0.7); }
-            50% { box-shadow: 0 0 25px rgba(255, 69, 0, 0.9); }
-            100% { box-shadow: 0 0 15px rgba(255, 69, 0, 0.7); }
-        }
-        
-        .logo-text {
-            font-size: 28px;
-            font-weight: 700;
-            background: linear-gradient(to right, #ff4500, #ff8c00);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 10px rgba(255, 69, 0, 0.3);
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 30px;
-        }
-        
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-            padding: 5px 0;
-        }
-        
-        nav a:hover {
-            color: #ff8c00;
-        }
-        
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(to right, #ff4500, #ff8c00);
-            transition: width 0.3s ease;
-        }
-        
-        nav a:hover::after {
-            width: 100%;
-        }
-        
-        .hero {
-            text-align: center;
-            padding: 60px 0;
-            margin-bottom: 60px;
-        }
-        
-        .hero h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            background: linear-gradient(to right, #ff4500, #ff8c00, #ff4500);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 15px rgba(255, 69, 0, 0.5);
-            animation: glow 3s infinite;
-        }
-        
-        @keyframes glow {
-            0% { text-shadow: 0 0 15px rgba(255, 69, 0, 0.5); }
-            50% { text-shadow: 0 0 25px rgba(255, 69, 0, 0.8); }
-            100% { text-shadow: 0 0 15px rgba(255, 69, 0, 0.5); }
-        }
-        
-        .hero p {
-            font-size: 20px;
-            max-width: 700px;
-            margin: 0 auto 30px;
-            line-height: 1.6;
-            color: #ddd;
-        }
-        
-        .cta-button {
-            display: inline-block;
-            padding: 15px 35px;
-            background: linear-gradient(45deg, #ff4500, #ff8c00);
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(255, 69, 0, 0.4);
-            margin-top: 20px;
-        }
-        
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 69, 0, 0.6);
-        }
-        
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 60px;
-        }
-        
-        .feature-card {
-            background: rgba(30, 30, 30, 0.7);
-            border-radius: 15px;
-            padding: 30px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 100, 0, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(to right, #ff4500, #ff8c00);
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 25px rgba(255, 69, 0, 0.3);
-        }
-        
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(45deg, #ff4500, #ff8c00);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-        
-        .feature-card h3 {
-            font-size: 22px;
-            margin-bottom: 15px;
-            color: #ff8c00;
-        }
-        
-        .feature-card p {
-            color: #bbb;
-            line-height: 1.6;
-        }
-        
-        .telegram-section {
-            background: rgba(30, 30, 30, 0.7);
-            border-radius: 15px;
-            padding: 40px;
-            text-align: center;
-            margin-bottom: 60px;
-            border: 1px solid rgba(255, 100, 0, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .telegram-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(to right, #ff4500, #ff8c00);
-        }
-        
-        .telegram-section h2 {
-            font-size: 32px;
-            margin-bottom: 20px;
-            color: #ff8c00;
-        }
-        
-        .telegram-section p {
-            font-size: 18px;
-            max-width: 700px;
-            margin: 0 auto 30px;
-            line-height: 1.6;
-            color: #ddd;
-        }
-        
-        .telegram-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 15px 35px;
-            background: #0088cc;
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 136, 204, 0.4);
-        }
-        
-        .telegram-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 136, 204, 0.6);
-            background: #0077b5;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 30px 0;
-            border-top: 1px solid rgba(255, 100, 0, 0.3);
-            color: #999;
-            font-size: 14px;
-        }
-        
-        .flame-animation {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 100px;
-            background: linear-gradient(to top, rgba(255, 69, 0, 0.2) 0%, transparent 100%);
-            z-index: -1;
-        }
-        
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                gap: 20px;
-            }
-            
-            nav ul {
-                gap: 15px;
-            }
-            
-            .hero h1 {
-                font-size: 36px;
-            }
-            
-            .hero p {
-                font-size: 18px;
-            }
-        }
-    </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Flame Group — Kodlaşdırma & Texnologiya</title>
+<style>
+  :root{
+    --bg1:#080808;
+    --card:#1d1d1d;
+    --accent1: #ff4500;
+    --accent2: #ff8c00;
+    --muted:#bfbfbf;
+    --glass: rgba(255,255,255,0.03);
+    --glass-2: rgba(255,140,0,0.06);
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    background: radial-gradient(1200px 500px at 10% 85%, rgba(255,84,20,0.06), transparent),
+                radial-gradient(1000px 400px at 85% 20%, rgba(255,40,0,0.05), transparent),
+                linear-gradient(180deg,var(--bg1), #000);
+    color:#eee;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    scroll-behavior:smooth;
+  }
+
+  /* container */
+  .wrap{
+    max-width:1200px;
+    margin:0 auto;
+    padding:28px;
+  }
+
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    padding:10px 0;
+    position:sticky;
+    top:0;
+    z-index:50;
+    backdrop-filter: blur(6px);
+  }
+
+  .brand{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    text-decoration:none;
+  }
+  .logo {
+    width:56px;height:56px;border-radius:50%;
+    background: conic-gradient(from 200deg at 50% 50%, var(--accent1), var(--accent2));
+    display:grid;place-items:center;
+    box-shadow:0 6px 22px rgba(255,100,0,0.16), 0 2px 6px rgba(0,0,0,0.6);
+    font-weight:700;font-size:20px;
+  }
+  .brand h1{
+    font-size:18px;margin:0;
+    background: linear-gradient(90deg,var(--accent1),var(--accent2));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .brand p{margin:0;font-size:12px;color:var(--muted)}
+
+  nav{display:flex;align-items:center;gap:18px}
+  nav a{
+    color:#ddd;text-decoration:none;font-weight:600;padding:8px 12px;border-radius:10px;
+    transition:all .22s ease;
+  }
+  nav a:hover{color:white;background:linear-gradient(90deg, rgba(255,69,0,0.08), rgba(255,140,0,0.06))}
+
+  /* mobile menu */
+  .hamburger{display:none;background:transparent;border:0;color:#fff;font-size:20px}
+
+  /* hero */
+  .hero{
+    display:flex;flex-direction:column;align-items:center;text-align:center;
+    padding:64px 20px 48px;
+  }
+  .hero h2{
+    font-size:44px;line-height:1.02;margin:0 0 18px;
+    background:linear-gradient(90deg,var(--accent1),var(--accent2));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 6px 28px rgba(255,69,0,0.08);
+  }
+  .hero p{max-width:820px;color:#d6d6d6;margin-bottom:18px;font-size:18px}
+
+  .cta-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:40px;
+    border:0;font-weight:700;cursor:pointer;text-decoration:none;
+    box-shadow:0 8px 26px rgba(0,0,0,0.5);
+  }
+  .btn-primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff}
+  .btn-outline{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#fff}
+
+  /* sections */
+  section{padding:40px 0}
+  .section-head{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+  .section-head h3{margin:0;font-size:22px;color:var(--accent2)}
+  .section-head p{margin:0;color:var(--muted);font-size:13px}
+
+  /* cards grid */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:22px;
+  }
+
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:var(--radius);
+    padding:20px;
+    border:1px solid rgba(255,140,0,0.06);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+    transition:transform .28s ease,box-shadow .28s ease;
+    position:relative;overflow:hidden;
+  }
+  .card:hover{transform:translateY(-10px);box-shadow:0 18px 48px rgba(255,80,0,0.08)}
+
+  .card .icon{
+    width:56px;height:56px;border-radius:12px;display:grid;place-items:center;font-size:22px;margin-bottom:12px;
+    background:linear-gradient(135deg,var(--accent1),var(--accent2));
+    box-shadow:0 6px 18px rgba(255,80,0,0.12);
+  }
+  .card h4{margin:0 0 8px;color:#ffb07a}
+  .card p{margin:0;color:#cfcfcf;font-size:14px;line-height:1.5}
+
+  /* Projects with tags */
+  .project-card{display:flex;flex-direction:column;gap:12px;}
+  .project-thumb{
+    height:160px;border-radius:10px;background:linear-gradient(135deg, rgba(255,69,0,0.08), rgba(255,140,0,0.02));
+    display:flex;align-items:center;justify-content:center;font-weight:700;color:rgba(255,255,255,0.12);
+    border:1px dashed rgba(255,140,0,0.04);
+  }
+  .tags{display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:12px;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.03);color:var(--muted)}
+
+  /* telegram highlight section */
+  .telegram-cta{
+    display:flex;flex-direction:column;align-items:center;gap:12px;padding:28px;border-radius:12px;background:linear-gradient(180deg, rgba(255,140,0,0.03), rgba(0,0,0,0.16));
+    border:1px solid rgba(255,140,0,0.06);
+  }
+
+  /* contact */
+  .contact-grid{display:grid;grid-template-columns:340px 1fr;gap:18px}
+  .contact-card{padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border:1px solid rgba(255,140,0,0.04)}
+  .socials{display:flex;gap:10px}
+  .socials a{display:inline-flex;padding:10px;border-radius:10px;text-decoration:none;color:#fff;font-weight:700;background:rgba(255,255,255,0.02)}
+
+  form input, form textarea{
+    width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff;margin-bottom:10px;
+  }
+  form button{margin-top:8px}
+
+  footer{padding:28px 0;text-align:center;color:var(--muted);font-size:13px;border-top:1px solid rgba(255,140,0,0.03);margin-top:20px}
+
+  /* small */
+  @media (max-width:900px){
+    .contact-grid{grid-template-columns:1fr}
+  }
+  @media (max-width:720px){
+    .hero h2{font-size:28px}
+    nav{display:none}
+    .hamburger{display:block}
+    header{padding:12px 0}
+  }
+
+  /* subtle floating particles */
+  .particle{
+    position:fixed;pointer-events:none;border-radius:50%;mix-blend-mode:screen;filter:blur(18px);opacity:0.9;z-index:0;
+  }
+</style>
 </head>
 <body>
-    <div class="fire-bg"></div>
-    
-    <div class="container">
-        <header>
-            <div class="logo">
-                <div class="logo-icon">🔥</div>
-                <div class="logo-text">Flame Group</div>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#">Ana Səhifə</a></li>
-                    <li><a href="#">Haqqımızda</a></li>
-                    <li><a href="#">Xidmətlər</a></li>
-                    <li><a href="#">Layihələr</a></li>
-                    <li><a href="#">Əlaqə</a></li>
-                </ul>
-            </nav>
-        </header>
-        
-        <section class="hero">
-            <h1>Kodlaşdırma Dünyasına Alovlu Giriş</h1>
-            <p>Flame Group olaraq, kodlaşdırma və texnologiya sahəsində ən yeni və alovlu məlumatları sizinlə paylaşırıq. Telegram qrupumuza qoşulun!</p>
-            <a href="#" class="cta-button">İndi Kəşf Edin</a>
-        </section>
-        
-        <section class="features">
-            <div class="feature-card">
-                <div class="feature-icon">💻</div>
-                <h3>Web Development</h3>
-                <p>Müasir veb texnologiyaları, framework-lər və ən yaxşı praktikalar haqqında dəyərli məlumatlar.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">📱</div>
-                <h3>Mobil Tətbiqlər</h3>
-                <p>iOS və Android üçün mobil tətbiq inkişafı, dizayn prinsipləri və performans optimallaşdırması.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🤖</div>
-                <h3>AI & Machine Learning</h3>
-                <p>Süni intellekt, maşın öyrənməsi və data elmi sahəsində ən son yeniliklər və dərslər.</p>
-            </div>
-        </section>
-        
-        <section class="telegram-section">
-            <h2>Telegram Qrupumuza Qoşulun</h2>
-            <p>Kodlaşdırma, texnologiya və proqramlaşdırma dünyasından ən son yeniliklər, faydalı məsləhətlər və maraqlı layihələr üçün Telegram qrupumuza qoşulun.</p>
-            <a href="https://t.me/+ehgPQ1kXjzM1NDRi" class="telegram-button" target="_blank">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.14.141-.259.259-.374.261l.213-3.053 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.136-.954l11.566-4.458c.538-.196 1.006.128.832.941z"/>
-                </svg>
-                Telegram Qrupuna Qoşul
-            </a>
-        </section>
-        
-        <footer>
-            <p>Flame Group &copy; 2023 - Bütün hüquqlar qorunur</p>
-        </footer>
-    </div>
-    
-    <div class="flame-animation"></div>
 
-    <script>
-        // Alov effekti üçün kiçik JavaScript
-        document.addEventListener('DOMContentLoaded', function() {
-            const fireBg = document.querySelector('.fire-bg');
-            
-            // Dinamik alov effekti yaratmaq
-            function createFireParticle() {
-                const particle = document.createElement('div');
-                particle.style.position = 'fixed';
-                particle.style.width = Math.random() * 100 + 50 + 'px';
-                particle.style.height = Math.random() * 100 + 50 + 'px';
-                particle.style.background = `radial-gradient(circle, 
-                    rgba(255, ${Math.random() * 100 + 100}, 0, ${Math.random() * 0.3 + 0.1}) 0%, 
-                    transparent 70%)`;
-                particle.style.borderRadius = '50%';
-                particle.style.left = Math.random() * 100 + 'vw';
-                particle.style.top = Math.random() * 100 + 'vh';
-                particle.style.zIndex = '-1';
-                particle.style.pointerEvents = 'none';
-                
-                fireBg.appendChild(particle);
-                
-                // Partikulu tədricən sil
-                setTimeout(() => {
-                    particle.style.opacity = '0';
-                    particle.style.transition = 'opacity 2s';
-                }, 1000);
-                
-                setTimeout(() => {
-                    if (fireBg.contains(particle)) {
-                        fireBg.removeChild(particle);
-                    }
-                }, 3000);
-            }
-            
-            // Partikulları müntəzəm yarat
-            setInterval(createFireParticle, 500);
-            
-            // Hero başlığı üçün parıltı effekti
-            const heroTitle = document.querySelector('.hero h1');
-            setInterval(() => {
-                heroTitle.style.animation = 'none';
-                setTimeout(() => {
-                    heroTitle.style.animation = 'glow 3s infinite';
-                }, 10);
-            }, 3000);
-        });
-    </script>
+<!-- floating particles (decor) -->
+<div id="particles"></div>
+
+<header class="wrap" role="banner">
+  <a class="brand" href="#hero">
+    <div class="logo">FG</div>
+    <div>
+      <h1>Flame Group</h1>
+      <p>Kodlaşdırma · Botlar · Təhsil</p>
+    </div>
+  </a>
+
+  <nav role="navigation" aria-label="Main navigation">
+    <a href="#hero">Ana Səhifə</a>
+    <a href="#about">Haqqımızda</a>
+    <a href="#services">Xidmətlər</a>
+    <a href="#projects">Layihələr</a>
+    <a href="#contact">Əlaqə</a>
+  </nav>
+
+  <button class="hamburger" id="menuBtn" aria-label="Menyu">☰</button>
+</header>
+
+<main>
+  <section id="hero" class="hero wrap" aria-labelledby="hero-title">
+    <h2 id="hero-title">Kodlaşdırma Dünyasına Alovlu Giriş</h2>
+    <p>Flame Group — proqramçıların, layihə sahiblərinin və texnologiya həvəskarlarının toplaşdığı məkandır. Biz praktiki dərslər, telegram botlar, web və mobil layihələr, habelə AI yönümlü məzmun hazırlayırıq.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#projects">Layihələrə Bax</a>
+      <a class="btn btn-outline" href="#contact">Qrupa Qoşul</a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="wrap" aria-labelledby="about-title">
+    <div class="section-head">
+      <h3 id="about-title">Haqqımızda</h3>
+      <p>— Flame Group haqqında qısa məlumat</p>
+    </div>
+
+    <div class="grid" style="grid-template-columns:1fr 1fr; align-items:center;">
+      <div class="card">
+        <h4>Missiyamız</h4>
+        <p>Bizim məqsədimiz yerli və regional proqramçı icmalarına praktiki bacarıqlar, hazır layihə nümunələri və real dünyaya yönəlik təlimatlar təqdim etməkdir. Qrupumuz həm təcrübəli inkişafçılar, həm də yeni başlayanlar üçün açıqdır.</p>
+      </div>
+
+      <div class="card">
+        <h4>Vizyonumuz</h4>
+        <p>Flame Group olaraq istədiyimiz — keyfiyyətli təhsil, açıq mənbə kod və faydalı layihələr vasitəsilə texnologiya sahəsində yeni nəsil yarada bilməkdir. Telegram və GitHub üzərindən aktiv fəaliyyət göstəririk.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="wrap" aria-labelledby="services-title">
+    <div class="section-head">
+      <h3 id="services-title">Xidmətlərimiz</h3>
+      <p>Web, mobil, botlar və AI — hər biri üçün təlim və layihə dəstəyi</p>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="icon">💻</div>
+        <h4>Web Development</h4>
+        <p>Frontend və backend: müasir JavaScript, React, Node.js və RESTful API-lər. Layihədən asılı optimallaşdırma və təhlükəsizlik tövsiyələri.</p>
+      </div>
+
+      <div class="card">
+        <div class="icon">📱</div>
+        <h4>Mobil Tətbiqlər</h4>
+        <p>Android & iOS üçün React Native və native yanaşmalar. UI/UX optimallaşdırma və performans təkmilləşdirmələri.</p>
+      </div>
+
+      <div class="card">
+        <div class="icon">🤖</div>
+        <h4>Telegram Botlar & Userbot</h4>
+        <p>BotFather/Telethon/pyrogram ilə botların yaradılması, oyun botları və userbot inteqrasiyaları—məsələn, səssiz sinema tipli oyunlar və xallama sistemləri.</p>
+      </div>
+
+      <div class="card">
+        <div class="icon">🧠</div>
+        <h4>AI & Machine Learning</h4>
+        <p>Model tətbiqi, maşın öyrənməsi və data analizləri — kiçik layihələrdən prototiplərə qədər dəstək.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="wrap" aria-labelledby="projects-title">
+    <div class="section-head">
+      <h3 id="projects-title">Layihələr</h3>
+      <p>Seçilmiş layihələrimiz və açıq mənbə nümunələr</p>
+    </div>
+
+    <div class="grid">
+      <div class="card project-card">
+        <div class="project-thumb">Flame Group Landing (Demo)</div>
+        <h4>Landing Page — Flame Group</h4>
+        <p>Responsive, dark-theme landing page — bu faylın özü layihə nümunəsidir. HTML/CSS/JS ilə hazırlanmış, animasiyalar və alov effekti daxildir.</p>
+        <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div>
+      </div>
+
+      <div class="card project-card">
+        <div class="project-thumb">Telegram Bot — Guess Game</div>
+        <h4>Səssiz Sinema / Guess Game Bot</h4>
+        <p>Telegram üçün oyun botu: söz göstərmə, növbətçi, xal sistemi, popup görünüş və admin panel funksiyaları.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">Telethon</span><span class="tag">Bot</span></div>
+      </div>
+
+      <div class="card project-card">
+        <div class="project-thumb">Userbot Pack</div>
+        <h4>Telethon Userbot Collection</h4>
+        <p>Replit və Render üçün hazır userbot konfiqurasiyaları, string session idarəsi və audio/musiqi funksiyaları.</p>
+        <div class="tags"><span class="tag">Userbot</span><span class="tag">Deploy</span><span class="tag">Audio</span></div>
+      </div>
+
+      <div class="card project-card">
+        <div class="project-thumb">AI Assistant Prototype</div>
+        <h4>Məşədi — AI Cavablayıcı</h4>
+        <p>GPT inteqrasiyalı cavablayıcı prototipi. Keçmiş söhbətləri yadda saxlayan və stilə uyğun cavab verən modul.</p>
+        <div class="tags"><span class="tag">AI</span><span class="tag">Chatbot</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TELEGRAM CTA -->
+  <section class="wrap">
+    <div class="telegram-cta">
+      <h3>Telegram Qrupumuza Qoşul</h3>
+      <p>İcma ilə birgə layihələr, bot nümunələri və dərsləri bölüşürük. İstənilən sualın varsa, orada soruşa bilərsən.</p>
+      <a class="btn btn-primary" href="https://t.me/+ehgPQ1kXjzM1NDRi" target="_blank" rel="noopener noreferrer">Telegram Qrupuna Qoşul</a>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="wrap" aria-labelledby="contact-title">
+    <div class="section-head">
+      <h3 id="contact-title">Əlaqə</h3>
+      <p>Mənimlə əlaqə saxla — sual, əməkdaşlıq və ya layihə təklifi</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-card">
+        <h4>Əlaqə vasitələri</h4>
+        <p style="color:var(--muted)">Aşağıdakı kanallarla əlaqə saxlayın:</p>
+
+        <div style="margin:12px 0;">
+          <strong>Telegram:</strong>
+          <div style="margin-top:6px"><a href="https://t.me/+ehgPQ1kXjzM1NDRi" target="_blank" style="color:#fff;text-decoration:none">Flame Group Qrupu / @flamegroup</a></div>
+        </div>
+
+        <div style="margin:12px 0;">
+          <strong>GitHub:</strong>
+          <div style="margin-top:6px"><a href="https://github.com/erufmmc-rgb" target="_blank" style="color:#fff;text-decoration:none">github.com/erufmmc-rgb</a></div>
+        </div>
+
+        <div style="margin:12px 0;">
+          <strong>E-poçt:</strong>
+          <div style="margin-top:6px"><a href="mailto:erufmmc.rgb@gmail.com" style="color:#fff;text-decoration:none">erufmmc.rgb@gmail.com</a></div>
+        </div>
+
+        <div style="margin-top:14px" class="socials">
+          <a href="https://t.me/+ehgPQ1kXjzM1NDRi" target="_blank">Telegram</a>
+          <a href="https://github.com/erufmmc-rgb" target="_blank">GitHub</a>
+        </div>
+      </div>
+
+      <div class="contact-card">
+        <h4>Bizə yaz</h4>
+        <!-- Simple mailto form (no backend) -->
+        <form id="contactForm" onsubmit="sendEmail(event)">
+          <input type="text" id="name" placeholder="Adınız" required />
+          <input type="email" id="email" placeholder="E-poçtınız" required />
+          <input type="text" id="subject" placeholder="Mövzu" required />
+          <textarea id="message" rows="6" placeholder="Mesajınız..." required></textarea>
+          <button class="btn btn-primary" type="submit">Göndər via E-poçt</button>
+          <p id="formNote" style="margin-top:10px;color:var(--muted);font-size:13px">Qeyd: Bu forma brauzerdəki mail proqramınızı açacaq. Server tərəfli backend əlavə etmək üçün mən kömək edə bilərəm.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="wrap">
+    <p>Flame Group © <span id="year"></span> — Bütün hüquqlar qorunur • Hazırlayan: Flame Group</p>
+  </footer>
+</main>
+
+<script>
+  // populate year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // mobile menu toggle (simple)
+  const menuBtn = document.getElementById('menuBtn');
+  const nav = document.querySelector('nav');
+  menuBtn.addEventListener('click', ()=> {
+    if (nav.style.display === 'flex') nav.style.display = 'none';
+    else nav.style.display = 'flex';
+  });
+
+  // Mailto form fallback (opens user's default mail client)
+  function sendEmail(e){
+    e.preventDefault();
+    const name = encodeURIComponent(document.getElementById('name').value);
+    const from = encodeURIComponent(document.getElementById('email').value);
+    const subj = encodeURIComponent(document.getElementById('subject').value);
+    const msg = encodeURIComponent(document.getElementById('message').value + '\n\n— ' + name + '\n' + from);
+    const mailto = `mailto:erufmmc.rgb@gmail.com?subject=${subj}&body=${msg}`;
+    window.location.href = mailto;
+  }
+
+  // decorative floating particles (fire-like)
+  (function createParticles(){
+    const pWrap = document.getElementById('particles');
+    const colors = ['rgba(255,120,40,0.12)','rgba(255,80,30,0.10)','rgba(255,140,40,0.06)'];
+    function spawn(){
+      const el = document.createElement('div');
+      el.className = 'particle';
+      const size = Math.random()*140 + 40;
+      el.style.width = el.style.height = size + 'px';
+      el.style.left = Math.random()*100 + 'vw';
+      el.style.top = Math.random()*100 + 'vh';
+      el.style.background = colors[Math.floor(Math.random()*colors.length)];
+      el.style.opacity = 0.9*(Math.random()*0.7 + 0.3);
+      el.style.transform = `translate3d(0,0,0)`;
+      el.style.transition = 'transform 6s linear, opacity 3s linear';
+      pWrap.appendChild(el);
+      // float up-right
+      requestAnimationFrame(()=> {
+        el.style.transform = `translate(${(Math.random()*80 - 40)}px, ${- (Math.random()*140 + 40)}px)`;
+        el.style.opacity = '0';
+      });
+      setTimeout(()=> el.remove(), 6500);
+    }
+    // spawn bursts
+    setInterval(()=> { spawn(); if(Math.random()>0.6) spawn(); }, 600);
+  })();
+
+  // small scroll reveal for cards
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(ent=>{
+      if(ent.isIntersecting){
+        ent.target.style.transform = 'translateY(0)';
+        ent.target.style.opacity = 1;
+        io.unobserve(ent.target);
+      }
+    });
+  }, {threshold:0.08});
+
+  document.querySelectorAll('.card').forEach((c, i)=>{
+    c.style.transform = 'translateY(18px)';
+    c.style.opacity = 0;
+    c.style.transition = 'all 600ms cubic-bezier(.2,.9,.2,1) '+(i*40)+'ms';
+    io.observe(c);
+  });
+
+  // smooth highlight on scroll (active nav item)
+  const sections = document.querySelectorAll('main section[id]');
+  const navLinks = document.querySelectorAll('header nav a');
+  window.addEventListener('scroll', ()=> {
+    let fromTop = window.scrollY + 120;
+    sections.forEach(sec=>{
+      if(sec.offsetTop <= fromTop && sec.offsetTop + sec.offsetHeight > fromTop){
+        navLinks.forEach(a => a.classList.remove('active'));
+        const id = sec.getAttribute('id');
+        const active = document.querySelector(`header nav a[href="#${id}"]`);
+        if(active) active.classList.add('active');
+      }
+    });
+  });
+
+</script>
 </body>
 </html>
