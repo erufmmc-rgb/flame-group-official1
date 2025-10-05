@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flame Group | Kodlaşdırma</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        .fire-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 80, 0, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(255, 40, 0, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 40% 40%, rgba(255, 120, 0, 0.1) 0%, transparent 40%);
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 2px solid rgba(255, 100, 0, 0.5);
+            margin-bottom: 40px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #ff4500, #ff8c00);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            box-shadow: 0 0 15px rgba(255, 69, 0, 0.7);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 15px rgba(255, 69, 0, 0.7); }
+            50% { box-shadow: 0 0 25px rgba(255, 69, 0, 0.9); }
+            100% { box-shadow: 0 0 15px rgba(255, 69, 0, 0.7); }
+        }
+        
+        .logo-text {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(to right, #ff4500, #ff8c00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(255, 69, 0, 0.3);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        nav a:hover {
+            color: #ff8c00;
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, #ff4500, #ff8c00);
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 60px 0;
+            margin-bottom: 60px;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #ff4500, #ff8c00, #ff4500);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(255, 69, 0, 0.5);
+            animation: glow 3s infinite;
+        }
+        
+        @keyframes glow {
+            0% { text-shadow: 0 0 15px rgba(255, 69, 0, 0.5); }
+            50% { text-shadow: 0 0 25px rgba(255, 69, 0, 0.8); }
+            100% { text-shadow: 0 0 15px rgba(255, 69, 0, 0.5); }
+        }
+        
+        .hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+            color: #ddd;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 15px 35px;
+            background: linear-gradient(45deg, #ff4500, #ff8c00);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 69, 0, 0.4);
+            margin-top: 20px;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 69, 0, 0.6);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .feature-card {
+            background: rgba(30, 30, 30, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 100, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #ff4500, #ff8c00);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(255, 69, 0, 0.3);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #ff4500, #ff8c00);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #ff8c00;
+        }
+        
+        .feature-card p {
+            color: #bbb;
+            line-height: 1.6;
+        }
+        
+        .telegram-section {
+            background: rgba(30, 30, 30, 0.7);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 60px;
+            border: 1px solid rgba(255, 100, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .telegram-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #ff4500, #ff8c00);
+        }
+        
+        .telegram-section h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #ff8c00;
+        }
+        
+        .telegram-section p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+            color: #ddd;
+        }
+        
+        .telegram-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 35px;
+            background: #0088cc;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 136, 204, 0.4);
+        }
+        
+        .telegram-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 136, 204, 0.6);
+            background: #0077b5;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid rgba(255, 100, 0, 0.3);
+            color: #999;
+            font-size: 14px;
+        }
+        
+        .flame-animation {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to top, rgba(255, 69, 0, 0.2) 0%, transparent 100%);
+            z-index: -1;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            nav ul {
+                gap: 15px;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fire-bg"></div>
+    
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">🔥</div>
+                <div class="logo-text">Flame Group</div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Ana Səhifə</a></li>
+                    <li><a href="#">Haqqımızda</a></li>
+                    <li><a href="#">Xidmətlər</a></li>
+                    <li><a href="#">Layihələr</a></li>
+                    <li><a href="#">Əlaqə</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <section class="hero">
+            <h1>Kodlaşdırma Dünyasına Alovlu Giriş</h1>
+            <p>Flame Group olaraq, kodlaşdırma və texnologiya sahəsində ən yeni və alovlu məlumatları sizinlə paylaşırıq. Telegram qrupumuza qoşulun!</p>
+            <a href="#" class="cta-button">İndi Kəşf Edin</a>
+        </section>
+        
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">💻</div>
+                <h3>Web Development</h3>
+                <p>Müasir veb texnologiyaları, framework-lər və ən yaxşı praktikalar haqqında dəyərli məlumatlar.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Mobil Tətbiqlər</h3>
+                <p>iOS və Android üçün mobil tətbiq inkişafı, dizayn prinsipləri və performans optimallaşdırması.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>AI & Machine Learning</h3>
+                <p>Süni intellekt, maşın öyrənməsi və data elmi sahəsində ən son yeniliklər və dərslər.</p>
+            </div>
+        </section>
+        
+        <section class="telegram-section">
+            <h2>Telegram Qrupumuza Qoşulun</h2>
+            <p>Kodlaşdırma, texnologiya və proqramlaşdırma dünyasından ən son yeniliklər, faydalı məsləhətlər və maraqlı layihələr üçün Telegram qrupumuza qoşulun.</p>
+            <a href="https://t.me/+ehgPQ1kXjzM1NDRi" class="telegram-button" target="_blank">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.14.141-.259.259-.374.261l.213-3.053 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.136-.954l11.566-4.458c.538-.196 1.006.128.832.941z"/>
+                </svg>
+                Telegram Qrupuna Qoşul
+            </a>
+        </section>
+        
+        <footer>
+            <p>Flame Group &copy; 2023 - Bütün hüquqlar qorunur</p>
+        </footer>
+    </div>
+    
+    <div class="flame-animation"></div>
+
+    <script>
+        // Alov effekti üçün kiçik JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            const fireBg = document.querySelector('.fire-bg');
+            
+            // Dinamik alov effekti yaratmaq
+            function createFireParticle() {
+                const particle = document.createElement('div');
+                particle.style.position = 'fixed';
+                particle.style.width = Math.random() * 100 + 50 + 'px';
+                particle.style.height = Math.random() * 100 + 50 + 'px';
+                particle.style.background = `radial-gradient(circle, 
+                    rgba(255, ${Math.random() * 100 + 100}, 0, ${Math.random() * 0.3 + 0.1}) 0%, 
+                    transparent 70%)`;
+                particle.style.borderRadius = '50%';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = Math.random() * 100 + 'vh';
+                particle.style.zIndex = '-1';
+                particle.style.pointerEvents = 'none';
+                
+                fireBg.appendChild(particle);
+                
+                // Partikulu tədricən sil
+                setTimeout(() => {
+                    particle.style.opacity = '0';
+                    particle.style.transition = 'opacity 2s';
+                }, 1000);
+                
+                setTimeout(() => {
+                    if (fireBg.contains(particle)) {
+                        fireBg.removeChild(particle);
+                    }
+                }, 3000);
+            }
+            
+            // Partikulları müntəzəm yarat
+            setInterval(createFireParticle, 500);
+            
+            // Hero başlığı üçün parıltı effekti
+            const heroTitle = document.querySelector('.hero h1');
+            setInterval(() => {
+                heroTitle.style.animation = 'none';
+                setTimeout(() => {
+                    heroTitle.style.animation = 'glow 3s infinite';
+                }, 10);
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
